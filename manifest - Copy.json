@@ -1,0 +1,70 @@
+{
+    "manifest_version": 3,
+    "name": "Zalo Marketing",
+    "version": "1.0",
+    "description": "Công cụ makerting zalo",
+    "action": {
+        "default_popup": "",
+        "default_icon": "icons/logo.png"
+    },
+    "icons": {
+        "16": "icons/logo.png",
+        "32": "icons/logo.png",
+        "48": "icons/logo.png",
+        "128": "icons/logo.png"
+    },
+    "background": {
+        "service_worker": "dist/background.bundle.js"
+    },
+    "permissions": [
+        "storage",
+        "cookies",      
+        "activeTab",
+        "notifications",
+        "search",
+        "scripting",
+        "tabs",
+        "alarms",
+        "contextMenus",
+        "webRequest"
+        
+    ],
+    "host_permissions": ["<all_urls>"], 
+
+    "content_scripts": [
+        {
+            "matches": [
+                "https://chat.zalo.me/*"
+            ],
+            "js": [
+                "dist/content.bundle.js", "js/jquery-3.1.1.min.js"
+            ],
+            "css": [
+                "css/style.css"
+            ]
+       
+        }
+        
+    ],   
+    "web_accessible_resources": [
+        {
+          "resources": ["page/popup.html"],
+          "matches": ["https://chat.zalo.me/*"]
+        }
+      ],
+   
+    "incognito": "split",
+    "content_security_policy":{
+      "extension_pages": "script-src 'self'; object-src 'self'"
+    },
+    "options_ui": {
+        "page": "page/options.html",
+        "open_in_tab": true
+    },
+
+
+      "externally_connectable": {
+        "matches": ["*://chat.zalo.me/*"]
+      }
+      
+}

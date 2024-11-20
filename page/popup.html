@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" class="[--scroll-mt:9.875rem] lg:[--scroll-mt:6.3125rem] [scrollbar-gutter:stable] js-focus-visible">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zalo Marketing Pro V2</title>
+    <link href="https://fonts.googleapis.com/css?family=Kanit|Rubik" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Include Handsontable CSS -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../css/toastr.min.css">
+    <link rel="stylesheet" href="../css/jquery-confirm.min.css">
+    <link rel="stylesheet" href="../css/skins/all.css">
+    <link rel="stylesheet" href="../css/multiple-select.min.css">
+    <link rel="stylesheet" href="../css/popup_style.css">
+    <link rel="stylesheet" href="../css/introjs.css">
+    
+
+</head>
+<body class="relative antialiased text-slate-500 bg-white">
+  <a href="#" title="Quản lý tài khoản"><div id="divAvatar" class="absolute top-0 right-0 p-4 flex flex-col items-center space-y-2 hover:cursor-pointer" style="cursor: pointer; z-index: 9999; position: absolute;">
+    <img id="img_avatar" src="https://s120-ava-talk.zadn.vn/b/5/1/1/1/120/29106132f6426defad714bc19562f520.jpg" alt="User Avatar" class="w-10 h-10 rounded-full hover:cursor-pointer">
+    <span class="text-gray-800 text-18px"><span id="txtusername_zalo" class="text-blue-700 text-18px font-bold hover:cursor-pointer">-</span></span>
+</div></a>
+ 
+    <div class="relative -mt-[5.75rem] overflow-hidden pt-[5.75rem]" style="border-left: 2px dashed lightgray; border-bottom: 2px dashed lightgray;">
+
+      <div class="white-preview" style="float: left; margin-top: 12px; margin-left: 30px;">
+        <input type="checkbox" class="checkbox" id="checkbox">
+        <label for="checkbox" class="checkbox-label">
+          <i class="fa fa-moon-o"></i>
+          <i class="fa fa-sun-o"></i>
+          <span class="ball"></span>
+        </label>
+      </div>
+
+    <img src="../img/beams-basic.png" alt="" class="absolute left-0 top-0 -ml-[39rem] w-[113.125rem] max-w-none z-0" style="z-index: -1;" id="imgBackground" style="display: none;">
+    <div class="flex-grow container pb-16 w-full" style="margin: 12px auto;">
+        <div class="header text-center py-4 rounded-t-lg  mb-2">
+            <h1 class="title text-center text-capitalize" style="color: #006edc; font-size: 30px;">Zalo Marketing Pro</h1>
+        </div>
+
+        <!-- <div class="mb-3 pt-4"> -->
+        <div class="mb-3">
+            <div id="tableCount" class="text-gray-700 mt-2 mb-2 text-sm"></div>
+            <div id="dataTableContainer" class="table-wrp block max-h-25" style="clear: both;"></div>
+            <input type="file" id="fileDanhSach" class="mb-3 input-field" style="display: none;">
+        </div>
+        <input type="file" id="fileMedia" multiple  class="mb-3 input-field" style="display: none;">
+
+        <div class="relative inline-block text-left" style="margin-right: 4px; float: left; " >
+          <div>
+            <button type="button" class="pink-button inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 hover:bg-pink-600 text-sm font-medium text-gray-700  focus:outline-none" id="menu-button2" aria-expanded="true" aria-haspopup="true" style="height: 35px;">
+             Bạn bè & Nhóm
+              <i class="fa fa-chevron-down ml-2" aria-hidden="true"></i>
+            </button>
+          </div>
+      
+          <div id="dropdown-menu2" style="z-index: 99999999;" class="origin-top-left absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+            <div class="py-1" role="none">
+            
+              <button id="btnGetFriends" data-option="1" class="btngetfriend_nhom hover:bg-gray-300 text-gray-700 block px-4 py-2 text-sm w-full text-left" role="menuitem">
+                <i class="fa fa-user-o" aria-hidden="true"></i> Bạn bè
+              </button>
+              <button id="btnFriendAndGroup" data-option="2" class="btngetfriend_nhom hover:bg-gray-300 text-gray-700 block px-4 py-2 text-sm w-full text-left" role="menuitem">
+                <i class="fa fa-users" aria-hidden="true"></i> Bạn bè và nhóm
+              </button>
+              <div class="border-t border-gray-200 my-1"></div> 
+              <button id="btnNhom" data-option="3" class="btngetfriend_nhom hover:bg-gray-300 text-gray-700 block px-4 py-2 text-sm w-full text-left" role="menuitem">
+                <i class="fa fa-user-circle-o" aria-hidden="true"></i> Tất cả nhóm
+              </button>
+              <button id="btnNhomAdmin" style="color: red;" data-option="4" class="btngetfriend_nhom hover:bg-gray-300 text-gray-700 block px-4 py-2 text-sm w-full text-left" role="menuitem">
+                <i class="fa fa-user-secret" aria-hidden="true"></i> Nhóm là Admin
+              </button>
+              <button id="btnNhomKoAdmin" data-option="5" class="btngetfriend_nhom hover:bg-gray-300 text-gray-700 block px-4 py-2 text-sm w-full text-left" role="menuitem">
+                <i class="fa fa-user" aria-hidden="true"></i> Nhóm không là Admin
+              </button>
+             
+         
+            </div>
+          </div>
+        </div>
+    
+       
+        <!-- <button id="btnGetFriends"  class="pink-button hover:bg-pink-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+          <i class="fa fa-users" aria-hidden="true"></i> Bạn bè
+        </button>   -->
+
+        <button id="btnNhapDienThoai" class="send-button hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+          <i class="fa fa-plus-circle" aria-hidden="true"></i> Nhập số điện thoại
+        </button>
+
+     
+        <button id="btnImportExcel" class="success-button hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+            <i class="fa fa-folder-open"></i> Nhập danh sách
+        </button>
+        <button id="btnShareAllFen"  class="share-button hover:bg-orange-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+          <i class="fa fa-share-alt" aria-hidden="true"></i> Chia sẻ bạn bè
+        </button>
+
+        <!-- <button id="btnOpenImage"  style="margin-left: 8px; " class="send-button hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+            <i class="fa fa-file-image-o"></i> Chọn image, file...
+        </button> -->
+
+        <!-- <button id="btnXuatTxt"  style="margin-left: 8px; float: right; " class="text-button hover:bg-purple-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+            <i class="fa fa-file-text-o" aria-hidden="true"></i> Xuất Text
+        </button>
+
+        <button id="btnXuatExcel"  style="margin-left: 8px; float: right; " class="success-button hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+            <i class="fa fa-file-excel-o" aria-hidden="true"></i> Xuất Excel
+        </button> -->
+        <div class="relative inline-block text-left" style="margin-left: 8px; float: right; " >
+            <div>
+              <button type="button" style="background-color: #30AC86; color: #fff;" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                Xuất dữ liệu
+                <i class="fa fa-chevron-down ml-2" aria-hidden="true"></i>
+              </button>
+            </div>
+        
+            <div id="dropdown-menu" style="z-index: 99999999;" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+              <div class="py-1" role="none">
+                <button id="btnXuatTxt" class="hover:bg-gray-300 text-gray-700 block px-4 py-2 text-sm w-full text-left" role="menuitem">
+                  <i class="fa fa-file-text-o mr-2" aria-hidden="true"></i> Xuất Text
+                </button>
+                <button id="btnXuatExcel" class="hover:bg-gray-300 text-gray-700 block px-4 py-2 text-sm w-full text-left" role="menuitem">
+                  <i class="fa fa-file-excel-o mr-2" aria-hidden="true"></i> Xuất Excel
+                </button>
+                <div class="border-t border-gray-200 my-1"></div> 
+                <button id="btnXuatDanhBa" class="hover:bg-gray-300 text-gray-700 block px-4 py-2 text-sm w-full text-left" role="menuitem">
+                    <i class="fa fa-address-book-o mr-2 text-blue-700" aria-hidden="true"></i> <span class="text-blue-700">Xuất Danh Bạ Zalo</span>
+                  </button>
+
+                  <button id="btnXuatVcard" class="hover:bg-gray-300 text-gray-700 block px-4 py-2 text-sm w-full text-left" role="menuitem">
+                    <i class="fa fa-address-card mr-2 text-green-700" aria-hidden="true"></i> <span class="text-green-700">Xuất Danh Bạ Vcard</span>
+                  </button>
+              </div>
+            </div>
+          </div>
+      
+        <div id="thumbnailPreview" class="thumbnail-container pt-4 mb-0" style="overflow: auto; clear: both;"></div>
+        <div id="selectedItemsCount" class="text-gray-700 mt-2 mb-2 text-sm">Bạn đã chọn <span class="text-blue-500 font-bold">0</span> tập tin.</div>
+        <!-- <div class="max-w-md mb-3  p-6 rounded-lg shadow-md"> -->
+            <!-- <h2 class="text-2xl font-bold mb-4">Cài đặt</h2> -->
+            <form>
+              <div class="flex space-x-4">        
+                <div>
+                  <label for="delay" class="block text-sm font-medium text-gray-700">TG chờ giữa 2 zalo (giây)</label>
+                  <input type="number" min="1" id="delay" name="delay" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="5" value="5">
+                </div>
+                <div>
+                  <label for="delay1" class="block text-sm font-medium text-gray-700">Giới hạn loat acc chạy 1 lượt (acc)</label>
+                  <input type="number" min="1" id="delay1" name="delay1" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="10" value="10">
+                </div>
+                <div>
+                  <label for="delay2" class="block text-sm font-medium text-gray-700">TG chờ giữa mỗi lượt (giây)</label>
+                  <input type="number" min="1" id="delay2" name="delay2" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="5" value="5">
+                </div>
+
+
+               
+              </div>
+            </form>
+          <!-- </div> -->
+
+        
+
+        <div class="mb-3 pt-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2" for="txtMessage" style="display: block;float: left;">
+                Nội dung tin nhắn:
+            </label>
+            <button id="emojiButton" class="text-gray-500 hover:text-yellow-700 focus:outline-none" style="float: left;font-size: 30px;margin-top: -10px;margin-left: 14px;">
+                <i class="fa fa-smile-o text-xl" aria-hidden="true"></i>
+            </button>
+
+            <button id="btnOpenImage" class="text-gray-500 hover:text-blue-700 focus:outline-none" style="float: left;font-size: 30px;margin-top: -10px;margin-left: 14px;">
+                <i class="fa fa-picture-o text-md" aria-hidden="true"></i>
+            </button>
+
+            <div class="divCheckbox" style="display: flex; flex-direction: row-reverse;">
+                <div style="margin-left: 12px;">
+                    <label>
+                      <input type="checkbox" id="chkKiemTraHopLe" class="icheck"> <label class="block text-sm font-medium text-gray-700" style="display: inline;">Hợp lệ</label>
+                    </label>
+                </div>
+                <div style="margin-left: 12px;" >
+                    <label>
+                      <input type="checkbox" id="chkKetBan" class="icheck"> <label class="block text-sm font-medium text-gray-700" style="display: inline;">Kết bạn</label>
+                    </label>
+                </div>
+                <div style="margin-left: 12px;" >
+                    <label>
+                      <input type="checkbox" id="chkShowModal" class="icheck"> <label class="block text-sm font-medium text-gray-700" style="display: inline;">Show modal</label>
+                    </label>
+                </div>
+                <div style="margin-left: 12px;" >
+                    <label>
+                      <input type="checkbox" id="chkAutoScroll" class="icheck" checked> <label class="block text-sm font-medium text-gray-700" style="display: inline;">Tự động cuộn</label>
+                    </label>
+                </div>
+
+                <div style="margin-left: 12px;" >
+                  <label>Code:
+                  <input type="text" id="countryCodeInput" placeholder="+84" value="+84"
+                  class="border border-gray-300 rounded p-1 text-center text-red-500" 
+                  style="width: 40px;">  </label>
+              </div>
+                
+            </div>
+         
+
+
+
+
+          
+            <div id="emojiPicker">
+                <span>😊</span>
+                <span>😂</span>
+                <span>😍</span>
+                <span>🥳</span>
+                <span>😢</span>
+                <span>😎</span>
+                <span>👍</span>
+                <span>👏</span>
+                <span>🙌</span>
+                <span>🙏</span>
+                <span>💪</span>
+                <span>🤩</span>
+                <span>🥰</span>
+                <span>😇</span>
+                <span>🤗</span>
+                <span>😉</span>
+                <span>🏆</span>
+                <span>🏅</span>
+                <span>🍺</span> <!-- Beer Mug -->
+                <span>🍻</span> <!-- Clinking Beer Mugs -->
+                <span>🍶</span> <!-- Sake Bottle and Cup -->
+                <span>🎉</span> <!-- Party Popper -->            
+                <span>🥳</span> <!-- Partying Face -->
+                <span>🎂</span> <!-- Birthday Cake -->
+                <span>🎈</span> <!-- Balloon -->
+                <span>🪅</span> <!-- Piñata -->
+                <span>🪩</span> <!-- Mirror Ball -->
+                <span>🎵</span> <!-- Musical Note -->
+                <span>🎶</span> <!-- Musical Notes -->
+                <span>🍹</span> <!-- Tropical Drink -->
+                <span>🍸</span> <!-- Cocktail Glass -->
+                <span>🍷</span> <!-- Wine Glass -->
+                <span>🥂</span> <!-- Clinking Glasses -->
+                <span>🎤</span> <!-- Microphone -->
+
+
+              
+                <span>🎊</span>
+     
+              
+      
+                <span>⭐</span>
+                <span>🌟</span>
+                <span>💥</span>
+                <span>🔥</span>
+                <span>💯</span>
+                <span>🌈</span>
+                <span>🍀</span>
+                <span>🌸</span>
+                <span>💐</span>
+                <span>💝</span>
+                <span>🎁</span>
+                <span>📣</span>
+                <span>📢</span>
+                <span>🔔</span>
+                <span>📈</span>
+                <span>📊</span>
+                <span>💲</span>
+                <span>💵</span>
+                <span>💸</span>
+                <span>🛒</span>
+                <span>🛍️</span>
+                <span>🎯</span>
+                <span>📅</span>
+                <span>📆</span>
+                <span>📌</span>
+                <span>🔗</span>
+                <span>✅</span>
+                <span>✔️</span>
+                <span>❗</span>
+                <span>❓</span>
+                <span>💬</span>
+                <span>🗨️</span>
+                <span>🔝</span>
+                <span>🔜</span>
+                <span>👀</span>
+                <span>💡</span>
+                <span>🎵</span>
+                <span>🎶</span>
+                <span>📱</span>
+                <span>💻</span>
+                <span>🖥️</span>
+                <span>🆕</span>
+                <span>🆒</span>
+                <span>🛠️</span>
+                <span>🚀</span>
+                <span>✈️</span>
+                <span>🏠</span>
+                <span>📍</span>
+                <span>💖</span>
+                <span>💗</span>
+                <span>💓</span>
+                <span>🏡</span>
+                <span>🏘️</span>
+                <span>🏢</span>
+                <span>🏣</span>
+                <span>🏤</span>
+                <span>🏥</span>
+                <span>🏦</span>
+                <span>🏨</span>
+                <span>🏩</span>
+                <span>🏪</span>
+                <span>🏫</span>
+                <span>🏬</span>
+                <span>🏭</span>
+                <span>🏯</span>
+                <span>🏰</span>
+                <span>🏕️</span>
+                <span>🏖️</span>
+                <span>🏗️</span>
+                <span>🏘️</span>
+                <span>🏙️</span>
+                <span>🌇</span>
+                <span>🌆</span>
+                <span>🏙️</span>
+                <span>🌃</span>
+                <span>🌉</span>
+                <span>🌌</span>
+                <span>🏛️</span>
+                <span>🏟️</span>
+                <span>🏜️</span>
+                <span>🏝️</span>
+                <span>🏞️</span>
+                <span>🏔️</span>
+                <span>🏕️</span>
+                <span>🏖️</span>
+                <span>🏡</span>
+                <span>🏢</span>
+                <span>🏤</span>
+                <span>🏥</span>
+                <span>🏦</span>
+                <span>🏨</span>
+                <span>🏩</span>
+                <span>🏪</span>
+                <span>🏫</span>
+                <span>🏬</span>
+                <span>🏭</span>
+                <span>🏯</span>
+                <span>🏰</span>
+                <span>🏳️</span>
+                <span>🏴</span>
+                <span>🏳️‍🌈</span>
+                <span>🏳️‍⚧️</span>
+                <span>💒</span>
+                <span>💍</span>
+                <span>🔑</span>
+                <span>🔨</span>
+                <span>🛠️</span>
+                <span>🪚</span>
+                <span>🔧</span>
+                <span>🔩</span>
+                <span>🧰</span>
+                <span>🪛</span>
+                <span>🧲</span>
+                <span>🔨</span>
+                <span>⚒️</span>
+                <span>🎉</span> <!-- Party Popper -->
+                <span>🎊</span> <!-- Confetti Ball -->
+                <span>🎂</span> <!-- Birthday Cake -->
+                <span>🎁</span> <!-- Wrapped Gift -->
+                <span>🍰</span> <!-- Shortcake -->
+                <span>🧁</span> <!-- Cupcake -->
+                <span>🍾</span> <!-- Bottle with Popping Cork -->
+                <span>🥂</span> <!-- Clinking Glasses -->
+                <span>🍻</span> <!-- Clinking Beer Mugs -->
+                <span>🎈</span> <!-- Balloon -->
+                <span>🥳</span> <!-- Partying Face -->
+                <span>😊</span> <!-- Smiling Face with Smiling Eyes -->
+                <span>😃</span> <!-- Smiling Face with Open Mouth -->
+                <span>😁</span> <!-- Beaming Face with Smiling Eyes -->
+                <span>😍</span> <!-- Smiling Face with Heart-Eyes -->
+                <span>🤩</span> <!-- Star-Struck -->
+                <span>🥰</span> <!-- Smiling Face with Hearts -->
+                <span>😘</span> <!-- Face Blowing a Kiss -->
+                <span>😇</span> <!-- Smiling Face with Halo -->
+                <span>🙌</span> <!-- Raising Hands -->
+                <span>👏</span> <!-- Clapping Hands -->
+                <span>👍</span> <!-- Thumbs Up -->
+                <span>🌟</span> <!-- Glowing Star -->
+                <span>💫</span> <!-- Dizzy -->
+                <span>✨</span> <!-- Sparkles -->
+                <span>🎇</span> <!-- Fireworks -->
+                <span>🎆</span> <!-- Firework Sparkler -->
+                <span>🌈</span> <!-- Rainbow -->
+                <span>🎵</span> <!-- Musical Note -->
+                <span>🎶</span> <!-- Musical Notes -->
+                <span>🎤</span> <!-- Microphone -->
+                <span>🎧</span> <!-- Headphone -->
+                <span>🎼</span> <!-- Musical Score -->
+                <span>🎹</span> <!-- Musical Keyboard -->
+                <span>🥁</span> <!-- Drum -->
+                <span>🎺</span> <!-- Trumpet -->
+                <span>🎷</span> <!-- Saxophone -->
+                <span>🎸</span> <!-- Guitar -->
+                <span>🪕</span> <!-- Banjo -->
+                <span>🎻</span> <!-- Violin -->
+                <span>📯</span> <!-- Postal Horn -->
+                <span>🎖️</span> <!-- Military Medal -->
+                <span>🏆</span> <!-- Trophy -->
+                <span>🏅</span> <!-- Sports Medal -->
+                <span>🥇</span> <!-- 1st Place Medal -->
+                <span>🥈</span> <!-- 2nd Place Medal -->
+                <span>🥉</span> <!-- 3rd Place Medal -->
+                <span>💐</span> <!-- Bouquet -->
+                <span>🌸</span> <!-- Cherry Blossom -->
+                <span>💮</span> <!-- White Flower -->
+                <span>🎀</span> <!-- Ribbon -->
+                <span>🪅</span> <!-- Piñata -->
+                <span>🎫</span> <!-- Ticket -->
+                <span>🎟️</span> <!-- Admission Tickets -->
+                <span>📆</span> <!-- Tear-Off Calendar -->
+                <span>📅</span> <!-- Calendar -->
+                <span>🗓️</span> <!-- Spiral Calendar -->
+                <span>📌</span> <!-- Pushpin -->
+                <span>🔖</span> <!-- Bookmark -->
+                <span>💝</span> <!-- Heart with Ribbon -->
+                <span>💖</span> <!-- Sparkling Heart -->
+                <span>💗</span> <!-- Growing Heart -->
+                <span>💓</span> <!-- Beating Heart -->
+                <span>💞</span> <!-- Revolving Hearts -->
+                <span>💕</span> <!-- Two Hearts -->
+                <span>❤️</span> <!-- Red Heart -->
+                <span>💙</span> <!-- Blue Heart -->
+                <span>💚</span> <!-- Green Heart -->
+                <span>💛</span> <!-- Yellow Heart -->
+                <span>🧡</span> <!-- Orange Heart -->
+                <span>💜</span> <!-- Purple Heart -->
+                <span>🖤</span> <!-- Black Heart -->
+                <span>🤍</span> <!-- White Heart -->
+                <span>🤎</span> <!-- Brown Heart -->
+                <span>🔔</span> <!-- Bell -->
+                <span>🎵</span> <!-- Musical Note -->
+                <span>💌</span> <!-- Love Letter -->
+            </div>
+
+
+            
+            <div class="relative">
+              <textarea rows="3" class="text-base shadow-lg appearance-none border border-gray-300 rounded-lg w-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" id="txtMessage" placeholder="Nhập tin nhắn..."></textarea>
+              <span id="clearIcon" class="hidden absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer text-gray-500">&times;</span>
+              <div id="charCount" class="absolute right-4 hidden text-gray-500">0 ký tự</div>
+          </div>
+           
+            
+        </div>
+
+        <div class="flex items-center justify-between w-full">
+            <div class="flex items-center">
+              
+                <button id="btnSend" class="send-button hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                    <i class="fa fa-play" aria-hidden="true"></i> Thực hiện
+                </button>
+        
+                <button id="btnStop" style="margin-left: 12px; display: none;" class="stop-button hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                    <i class="fa fa-stop-circle"></i> Dừng lại
+                </button>
+
+                <button id="btnReset" style="margin-left: 8px;" class="reset-button hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                  <i class="fa fa-refresh" aria-hidden="true"></i> Làm mới
+              </button>
+
+              <button id="btnXoaCache" style="margin-left: 8px;" class="reset-button hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                <i class="fa fa-trash-o" aria-hidden="true"></i> Xóa Cache
+            </button>
+            </div>
+        
+            <div class="ml-auto">
+                <button id="btnLogout" class="reset-button hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                    <i class="fa fa-sign-out"></i> Đăng xuất zalo
+                </button>
+            </div>
+        </div>
+        
+        
+
+        <!-- <div class="flex items-center flex-end">
+            <button id="btnSend" class="send-button hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Bắt đầu gởi tin
+            </button>
+
+            <button id="btnStop"  style="margin-left: 12px; display: none;" class="stop-button hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                <i class="fa fa-hand-paper-o"></i> Dừng gởi
+            </button>
+
+            
+            <button id="btnLogout"  style="margin-left: 8px; float: right; " class="stop-button hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                <i class="fa fa-sign-out"></i> Đăng xuất
+            </button>
+
+            <button id="btnKetBan" class="send-button hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                <i class="fa fa-user-plus" aria-hidden="true"></i> Bắt đầu kết bạn
+            </button>
+
+            <button id="btnStopKetBan"  style="margin-left: 12px; display: none;" class="stop-button hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                <i class="fa fa-hand-paper-o"></i> Dừng kết bạn
+            </button>
+
+            <div>
+                <input type="checkbox" id="checkbox" class="hidden" checked />
+                <label for="checkbox">
+                  <span class="checkbox"></span>
+                  <span class="ml-2 text-gray-700">Kết bạn</span>
+                </label>
+              </div>
+
+         
+        </div> -->
+       <!-- Footer -->
+
+      
+        <div class="flex items-center justify-center  py-4 fixed bottom-0" style="width: 93%;">
+        
+            <p class="text-gray-500 text-sm" style="border-top: 1px solid gray; padding-top: 4px; width: -webkit-fill-available;">Bản quyền <a class="text-blue-500 hover:text-blue-700" href="https://laptrinhvb.net" target="_blank">laptrinhvb.net</a> | <span id="txtThoiHan"></span></p>
+
+      
+        </div>
+       
+    </div>
+    </div>
+    <!-- Include Handsontable JavaScript -->
+    <script src="../js/jquery-latest.min.js"></script>
+    <!-- <script src="../js/handsontable.full.min-new.js"></script> -->
+    <!-- <script src="../js/handsontable.full.min.js"></script> -->
+    <script src="../js/xlsx.full.min.js"></script>
+    <script src="../js/FileSaver.min.js"></script>
+    <script src="../js/toastr.min.js"></script>
+    <script src="../js/jquery-confirm.min.js"></script>
+    <script src="../js/jquery.cookie.js"></script>
+    <script src="../js/icheck.js"></script>
+    <script src="../js/multiple-select.min.js"></script>
+    <script src="../js/jquery.simple-checkbox-table.min.js"></script>
+    <script src="../js/notify.min.js"></script>
+    <script src="../js/intro.js"></script>
+    <script src="../js/popup.js"></script>
+    <!-- <script src="../dist/popup.bundle.js"></script> -->
+</body>
+</html>

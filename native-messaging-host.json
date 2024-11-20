@@ -1,0 +1,9 @@
+{
+  "name": "laptrinhvb.net.zaloapp",
+  "description": "My Native Messaging Host",
+  "path": "D:\\EBOOK\\MyApp\\SendMessageApp\\SendMessageApp\\bin\\Debug\\SendMessageApp.exe",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://pfopdmkapjakmpepkgbpdkhplookjcmf/"
+  ]
+}

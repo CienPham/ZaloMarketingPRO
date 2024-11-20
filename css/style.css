@@ -1,0 +1,45 @@
+.zl-modal{
+    /* display: none !important; */
+    left: -450px !important;
+}
+
+#frameMain_th {
+    width: 0% !important;
+    height: 100%;
+    float: right;
+    position: absolute;
+    right: -800px;
+    top: 0;
+    z-index: 9999;
+    border: none;
+    /* display: none; */
+}
+#container.WEB {
+    padding-top: 0;
+    margin-top: 0;
+    height: 100%;
+    width: 100%;
+}
+.tds-banner-download__container{
+    display: none !important;
+}
+
+.mytooltip {
+    position: absolute;
+    background-color: #9254de;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    /* z-index: 9999; */
+  }
+  iframe {
+    /* width: 100%; */
+    height: 100vh !important;
+    /* border: none; */
+  }
+  /* body, html {
+    background-color: #333;
+    color: #e4e6eb;
+    text-shadow: 0 0 1px currentColor;
+} */
