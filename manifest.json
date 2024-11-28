@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Zalo Marketing",
-    "version": "1.0.1",
-    "description": "Công cụ tự động hóa gởi tin nhắn và chăm sóc khách hàng trên Zalo",
+    "name": "Zalo Support",
+    "version": "1",
+    "description": "Công cụ tự động hóa gởi tin nhắn",
     "action": {
         "default_popup": "",
         "default_icon": "icons/logo.png"

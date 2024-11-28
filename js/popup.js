@@ -2081,7 +2081,6 @@ END:VCARD`;
   btnSend.addEventListener("click", () => {
     var listSelected = getCheckedRows();
     let IS_PHAT_CODE = 0;
-    //console.log('LIST SELECTED', listSelected)
     if ($("thead").length) {
       $("thead th:nth-child(3)").each(function () {
         var headerText = $(this).text().trim();
@@ -2128,11 +2127,6 @@ END:VCARD`;
     saveSetting();
     chrome.storage.local.set({ IS_PHAT_CODE: IS_PHAT_CODE });
     document.querySelectorAll("td:nth-child(4)").forEach(function (td) {
-      // if (isDarkMode()) {
-      //     td.style.backgroundColor = getDefaultDarkModeColor();
-      // } else {
-      //     td.style.backgroundColor = 'white';
-      // }
     });
 
     var isKetBan = $("#chkKetBan").iCheck("update")[0].checked;
@@ -2144,12 +2138,6 @@ END:VCARD`;
       );
       return;
     }
-
-    // var settings = {delay, delay1, delay2, isKiemTraHopLe: false}
-
-    // chrome.storage.local.set({settings: settings})
-
-    // console.log(settings)
 
     chrome.storage.local.get("DanhSach", function (data) {
       if (data.DanhSach.length == 0) {

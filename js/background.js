@@ -2,50 +2,15 @@ let stopProcessing = false;
 let mdata;
 let fileSend;
 
-// let port = null;
-
-// function connectNative() {
-//     port = chrome.runtime.connectNative('laptrinhvb.net.zaloapp');
-    
-//     port.onMessage.addListener((message) => {
-//         console.log("Received message from native app: ", message);
-//         // Handle the received message
-//     });
-
-//     port.onDisconnect.addListener(() => {
-//         console.log("Disconnected from native app");
-//         port = null;
-//     });
-
-//     port.onConnect.addListener(() => {
-//         console.log("Connected to native app");
-//     });
-
-//     port.onConnectFailed.addListener((error) => {
-//         console.error("Failed to connect to native app:", error);
-//     });
-// }
-
-// // Establish connection when the extension starts
-// connectNative();
 
 function isValidVietnamesePhoneNumber(phoneNumber) {
-  // Regular expression to match Vietnamese phone numbers with the following formats:
-  // 0xxxxxxxxx (with leading 0)
-  // +84xxxxxxxxx (with country code +84)
-  // 84xxxxxxxxx (with country code 84)
-  // xxxxxxxxx (without leading 0 or country code)
   const vietnamPhonePattern = /^(0|\+?84)?(3|5|7|8|9)(\d{8})$/;
-  
-  // Remove non-digit characters from the input to handle formats like "+84" or spaces
   const sanitizedPhoneNumber = phoneNumber.replace(/[\s+]/g, '');
-  
   return vietnamPhonePattern.test(sanitizedPhoneNumber);
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log(message);
-
   if (message.message === "getActiveTab") {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs.length > 0) {
@@ -56,7 +21,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     });
     return true; 
   }
-
   if(message.task === "COPY_COOKIE"){
     chrome.cookies.getAll({url: "https://chat.zalo.me"}, function(cookies) {    
       console.log("COOKIES", cookies)
@@ -87,9 +51,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const { cookie, username } = message.data;
     setCookies(cookie, username);
   }
-
-
-
   function setCookies(cookies, username) {
     try {
         const cookieArray = JSON.parse(cookies);
@@ -163,11 +124,6 @@ function clearCookies(url) {
       console.log('All cookies cleared for the URL:', url);
   });
 }
-
-
-
-
-
   function copyToClipboard(text) {
     try {
         navigator.clipboard.writeText(text).then(function() {
@@ -208,110 +164,96 @@ function clearCookies(url) {
       async function sleep(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
       }
-
       async function processItem(item) {
         const phone = item[0];
         const name = item[1];
-
+    
         try {
-          const result = await new Promise((resolve, reject) => {
-            chrome.storage.local.get(["tabZalo", "settings"], (result) => {
-              if (chrome.runtime.lastError) {
-                return reject(chrome.runtime.lastError);
-              }
-              resolve(result);
+            const result = await new Promise((resolve, reject) => {
+                chrome.storage.local.get(["tabZalo", "settings"], (result) => {
+                    if (chrome.runtime.lastError) {
+                        return reject(chrome.runtime.lastError);
+                    }
+                    resolve(result);
+                });
             });
-          });
-
-          const activeTab = result.tabZalo.id;
-          const isKiemTraHopLe = result.settings.isKiemTraHopLe
-
-          console.log("BACKGROUND.JS => ISkIEMTRAHOPLE", isKiemTraHopLe)
-
-          if (isBanBe === "KHACH_HANG") {
-            await new Promise((resolve, reject) => {
-            let phone = item[0]
-              
-            if(isValidVietnamesePhoneNumber(phone) === false){
-                var data = {
-                  status: "error",
-                  phone: phone,
-                  message: "Số điện thoại này không hợp lệ.",
-                };
-            
-                chrome.runtime.sendMessage({ task: "TRANGTHAI_SEND_MESSAGE", data: data });
-                return reject("Số điện thoại không hợp lệ.");
+    
+            const activeTab = result.tabZalo.id;
+            const isKiemTraHopLe = result.settings.isKiemTraHopLe;
+    
+            // Thay thế @@ bằng tên người nhận trong tin nhắn
+            const personalizedMessage = mdata.message.replace(/@@/g, name);
+    
+            if (isBanBe === "KHACH_HANG") {
+                await new Promise((resolve, reject) => {
+                    if (isValidVietnamesePhoneNumber(phone) === false) {
+                        var data = {
+                            status: "error",
+                            phone: phone,
+                            message: "Số điện thoại này không hợp lệ.",
+                        };
+    
+                        chrome.runtime.sendMessage({ task: "TRANGTHAI_SEND_MESSAGE", data: data });
+                        return reject("Số điện thoại không hợp lệ.");
+                    }
+    
+                    chrome.tabs.sendMessage(
+                        activeTab,
+                        {
+                            task: "clickAddContact",
+                            item: item,
+                            phone: phone,
+                            message: personalizedMessage, // Gửi tin nhắn đã thay thế
+                            isCheck: isKiemTraHopLe,
+                            isKetBan: result.settings.isKetBan,
+                        },
+                        (response) => {
+                            if (chrome.runtime.lastError) {
+                                return reject(chrome.runtime.lastError);
+                            }
+                            resolve(response);
+                        }
+                    );
+                });
             }
-
-
-
-              chrome.tabs.sendMessage(
-                activeTab,
-                {
-                  task: "clickAddContact",
-                  item: item,
-                  phone: phone,
-                  message: mdata.message,
-                  isCheck: isKiemTraHopLe,
-                  isKetBan: result.settings.isKetBan,
-                },
-                (response) => {
-                  if (chrome.runtime.lastError) {
-                    return reject(chrome.runtime.lastError);
-                  }
-                  resolve(response);
-                }
-              );
-            });
-          }
-
-          if (isBanBe === "BAN_BE") {
-            await new Promise((resolve, reject) => {
-              chrome.tabs.sendMessage(
-                activeTab,
-                {
-                  task: "clickInputFriend",
-                  name: name,
-                  message: mdata.message,
-                  uid: phone,
-                },
-                (response) => {
-                  if (chrome.runtime.lastError) {
-                    return reject(chrome.runtime.lastError);
-                  }
-                  resolve(response);
-                }
-              );
-            });
-          }
+    
+            if (isBanBe === "BAN_BE") {
+                await new Promise((resolve, reject) => {
+                    chrome.tabs.sendMessage(
+                        activeTab,
+                        {
+                            task: "clickInputFriend",
+                            name: name,
+                            message: personalizedMessage, // Gửi tin nhắn đã thay thế
+                            uid: phone,
+                        },
+                        (response) => {
+                            if (chrome.runtime.lastError) {
+                                return reject(chrome.runtime.lastError);
+                            }
+                            resolve(response);
+                        }
+                    );
+                });
+            }
         } catch (error) {
-          console.error("Error in processItem:", error);
+            console.error("Error in processItem:", error);
         }
-      }
-
+    }
+    
+     
       async function processItemsWithDelay(items) {
+        console.log('Teddt',items);
+
         const shortDelay = Number(delay) * 1000;
-        let longDelay = Number(delay2) * 1000;
-        // chrome.storage.local.get(["isKiemTraHopLe"], (result) => {
-        //   // if(result.isKiemTraHopLe === true){
-        //   //   longDelay = shortDelay
-        //   // }
-        // })
-
-        
+        let longDelay = Number(delay2) * 1000; 
         const numprocessWait = Number(delay1);
-
         console.log("shortDelay", shortDelay);
         console.log("longDelay", longDelay);
         console.log("numprocessWait", numprocessWait);
-        let processedCount = 0;
-
+        let processedCount = 0;    
         for (let i = 0; i < items.length; i++) {
           if (stopProcessing) return;
-        //  if (i === 0) continue;
-
-
-
           const item = items[i];
           let messageInfo = `(${i +1 }/${items.length})`;
           chrome.runtime.sendMessage(
@@ -324,7 +266,6 @@ function clearCookies(url) {
               }
             }
           );
-
           if (i === 1) {
             chrome.runtime.sendMessage(
               { task: "PROCESSING_ITEM", data: item },
@@ -337,19 +278,14 @@ function clearCookies(url) {
               }
             );
           }
-
           await processItem(item);
-          
           await sleep(2000);
-
           processedCount++;
-
           if (processedCount % numprocessWait === 0) {
             if (i + 1 < items.length) {
               let nextItem = items[i + 1];
               await startCountdown(nextItem, longDelay);
               if (stopProcessing) return;
-
               chrome.runtime.sendMessage(
                 { task: "PROCESSING_ITEM", data: nextItem },
                 (response) => {
