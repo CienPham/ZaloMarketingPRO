@@ -535,10 +535,3 @@ chrome.runtime.onInstalled.addListener(function () {
   });
 });
 
-chrome.runtime.onInstalled.addListener(function (details) {
-  // if (details.reason == 'install') {     
-      chrome.runtime.setUninstallURL('https://laptrinhvb.net/thankyou.html');
-  // } else if (details.reason == 'update') {
-  //     chrome.runtime.setUninstallURL('https://laptrinhvb.net/bai-viet/phan-mem-ung-dung/--SOFTWARE---Phan-mem-goi-tin-nhan-Zalo-Marketing-Pro-gia-re-mem-nhat-thi-truong/fbf2d15be0c15013.html');
-  // }
-});
