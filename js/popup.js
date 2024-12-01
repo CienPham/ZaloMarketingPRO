@@ -2516,89 +2516,8 @@ END:VCARD`;
     }
 
     fileDanhSach.value = "";
-
-    // reader.onload = function(e) {
-    //     var data = new Uint8Array(e.target.result);
-    //     var workbook = XLSX.read(data, { type: 'array' });
-
-    //     var sheetName = workbook.SheetNames[0];
-    //     var sheet = workbook.Sheets[sheetName];
-    //     var jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-    //     console.log("READ TXT", jsonData)
-    //     jsonData.forEach(row => {
-    //         if (row.length > 0) {
-    //           row[0] = String(row[0]);
-    //         }
-    //       });
-
-    //     // remove duplicate phone
-    //     var seenValues = new Set();
-
-    //     // Filter out duplicate values in the first column and convert the values to strings
-    //     jsonData = jsonData.filter(row => {
-    //     if (row.length > 0) {
-    //         row[0] = String(row[0]); // Convert the first column's value to a string
-    //         if (seenValues.has(row[0])) {
-    //         return false; // Duplicate found, exclude this row
-    //         } else {
-    //         seenValues.add(row[0]); // Add the value to the set of seen values
-    //         return true; // Include this row
-    //         }
-    //     }
-    //     return true; // Include empty rows
-    //     });
-    //     // end remove duplicate phone
-    //     displayExcelData(jsonData, "khách hàng");
-    // };
-
-    // reader.readAsArrayBuffer(file);
   });
   var hot;
-  // function displayExcelData(data, type) {
-  //     chrome.storage.local.set({"DanhSach": data, "type": type})
-  //     console.log("displayExcel", data)
-  //     var columnHeaders = data[0].concat("Trạng Thái");
-  //     data.forEach(function(row) {
-  //         row.push("");
-  //     });
-
-  //     $("#tableCount").html(`Bạn đã chọn <span class="text-blue-500 font-bold">${data.length - 1}</span> ${type}.`)
-  //     var rowHeight = 25;
-  //     var maxVisibleRows = 10;
-
-  //     var height = Math.min(data.length * rowHeight, maxVisibleRows * rowHeight);
-  //     if (hot) {
-  //         hot.destroy();
-  //     }
-  //     hot = new Handsontable(hotElement, {
-  //         data: data.slice(1),
-  //         rowHeaders: false,
-  //         filters: true,
-  //         // enable the column menu, but display only the filter menu items
-  //         dropdownMenu: ['filter_by_condition', 'filter_by_value', 'filter_action_bar'],
-  //         width: '100%',
-  //         colWidths: [100, 150, 500],
-  //         manualColumnResize: true,
-  //         colHeaders: false,
-  //         licenseKey: 'non-commercial-and-evaluation',
-  //         colHeaders: columnHeaders,
-  //         columns: Array(data[0].length).fill({ type: 'text' }),
-  //         // columnDefs: [
-  //         //     {
-  //         //         type: 'checkbox',
-  //         //         renderer: checkboxRenderer,
-  //         //         width: 50
-  //         //     }
-  //         // ],
-  //         height: height,
-  //         autoRowSize: {
-  //             syncLimit: maxVisibleRows
-  //         }
-  //     });
-
-  //     // setTextByPhoneNumber("0937903300", "Active", "#d9f7be", "#389e0d");
-  //     // setTextByPhoneNumber("0908697365", "Không tìm thấy thông tin", "#ffccc7", "#f5222d");
-  // }
 
   function displayExcelData(data, type) {
     chrome.storage.local.set({ DanhSach: data, type: type });
