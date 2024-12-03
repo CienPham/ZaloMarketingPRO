@@ -419,7 +419,7 @@
                 <span>💌</span> <!-- Love Letter -->
             </div>         
             <div class="relative">
-              <textarea rows="3" class="text-base shadow-lg appearance-none border border-gray-300 rounded-lg w-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" id="txtMessage" placeholder="Nhập nội dung tin nhắn (sử dụng @@ để thay thế bằng tên)..."></textarea>
+              <div rows="3" class="quill-editor text-base shadow-lg appearance-none border border-gray-300 rounded-lg w-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" id="txtMessage" placeholder="Nhập nội dung tin nhắn (sử dụng @@ để thay thế bằng tên)..."></div>
               <span id="clearIcon" class="hidden absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer text-gray-500">&times;</span>
               <div id="charCount" class="absolute right-4 hidden text-gray-500">0 ký tự</div>
           </div>
@@ -453,10 +453,7 @@
         </div>
     </div>
     </div>
-    <!-- Include Handsontable JavaScript -->
     <script src="../js/jquery-latest.min.js"></script>
-    <!-- <script src="../js/handsontable.full.min-new.js"></script> -->
-    <!-- <script src="../js/handsontable.full.min.js"></script> -->
     <script src="../js/xlsx.full.min.js"></script>
     <script src="../js/FileSaver.min.js"></script>
     <script src="../js/toastr.min.js"></script>
@@ -468,6 +465,6 @@
     <script src="../js/notify.min.js"></script>
     <script src="../js/intro.js"></script>
     <script src="../js/popup.js"></script>
-    <!-- <script src="../dist/popup.bundle.js"></script> -->
+    <script src="../js/quill.min.js"></script>
 </body>
 </html>

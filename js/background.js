@@ -382,27 +382,6 @@ function clearCookies(url) {
 
     clearCookies(currentTabUrl);
     executeScriptInActiveTab();
-
-    
-    
-    // chrome.cookies.getAll({ url: currentTabUrl }, function (cookies) {
-    //   for (let cookie of cookies) {
-    //     const cookieUrl =
-    //       "http" +
-    //       (cookie.secure ? "s" : "") +
-    //       "://" +
-    //       cookie.domain +
-    //       cookie.path;
-    //     chrome.cookieStore.get(cookieUrl, function (cookieStore) {
-    //       cookieStore.removeCookies(
-    //         { name: cookie.name, url: cookieUrl },
-    //         function (removedCookies) {
-    //           console.log("Removed cookies:", removedCookies);
-    //         }
-    //       );
-    //     });
-    //   }
-    // });
   }
 
   function executeScriptInActiveTab() {
@@ -521,11 +500,7 @@ chrome.action.onClicked.addListener(function (tab) {
     chrome.tabs.create({ url: 'https://chat.zalo.me' });
   }
 
-  // chrome.cookies.getAll({url: "https://chat.zalo.me"}, function(cookies) {
-  //   //thecookies = cookies
-  //   // sendResponse(cookies);
-  //   console.log("COOKIES", cookies)
-  // });
+
 });
 
 chrome.runtime.onInstalled.addListener(function () {

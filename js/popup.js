@@ -1,3 +1,4 @@
+
 toastr.options = {
   closeButton: false,
   debug: false,
@@ -39,13 +40,10 @@ function scrollToRowFromCell(cell) {
 }
 
 function isDarkMode() {
-  // This function checks if dark mode is active
-  // You might need to adjust this based on how you implement dark mode
   return document.body.classList.contains("dark-mode");
 }
 
 function getDefaultDarkModeColor() {
-  // Return a default dark mode background color
   return "#2c2c2c";
 }
 
@@ -69,13 +67,6 @@ function setTextByPhoneNumber(
       if (trangThaiCell) {
         trangThaiCell.textContent = newText;
         trangThaiCell.style.color = foregroundColor;
-
-        // Use default dark mode color if in dark mode
-        // if (isDarkMode()) {
-        //     trangThaiCell.style.backgroundColor = getDefaultDarkModeColor();
-        // } else {
-        //     trangThaiCell.style.backgroundColor = backgroundColor;
-        // }
         return;
       }
     }
@@ -101,13 +92,6 @@ function setTextNameByPhoneNumber(
       if (trangThaiCell) {
         trangThaiCell.textContent = newText;
         trangThaiCell.style.color = foregroundColor;
-
-        // Use default dark mode color if in dark mode
-        // if (isDarkMode()) {
-        //     trangThaiCell.style.backgroundColor = getDefaultDarkModeColor();
-        // } else {
-        //     trangThaiCell.style.backgroundColor = backgroundColor;
-        // }
         return;
       }
     }
@@ -128,13 +112,6 @@ function setTextByName(name, newText, backgroundColor, foregroundColor) {
       if (trangThaiCell) {
         trangThaiCell.textContent = newText;
         trangThaiCell.style.color = foregroundColor;
-
-        // Use default dark mode color if in dark mode
-        // if (isDarkMode()) {
-        //     trangThaiCell.style.backgroundColor = getDefaultDarkModeColor();
-        // } else {
-        //     trangThaiCell.style.backgroundColor = backgroundColor;
-        // }
         return;
       }
     }
@@ -285,7 +262,7 @@ document.addEventListener("DOMContentLoaded", function () {
   chrome.storage.local.get(["userEmail", "loginExpiration"], function (result) {
     var emailStore = result.userEmail;
     $.ajax({
-      url: "https://key.laptrinhvb.net/api/get_user_info",
+      url: "",
       method: "POST",
       data: {
         email: emailStore,
@@ -374,15 +351,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnOpenImage = document.getElementById("btnOpenImage");
   const fileDanhSach = document.getElementById("fileDanhSach");
   const fileMedia = document.getElementById("fileMedia");
-
   const emojiButton = document.getElementById("emojiButton");
   const emojiPicker = document.getElementById("emojiPicker");
-
   const textarea = document.getElementById("txtMessage");
   const clearIcon = document.getElementById("clearIcon");
   const charCount = document.getElementById("charCount");
   const divAvatar = document.getElementById("divAvatar");
-
+  const btnADDfriden = document.getElementById("btnADDfriden");
 
   function loadAccountLogined() {
     chrome.storage.local.get(
@@ -1188,7 +1163,6 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     });
   });
-
   function getCheckedCount() {
     setTimeout(getCheckedCountTimeOut, 200);
   }
@@ -1513,13 +1487,7 @@ document.addEventListener("DOMContentLoaded", function () {
             $("#thumbnailPreview").empty();
             $("#thumbnailPreview").height("0px");
             $("#dataTableContainer").empty();
-            // $("#dataTableContainer").height("0px");
             document.querySelectorAll("td:nth-child(4)").forEach(function (td) {
-              // if (isDarkMode()) {
-              //     td.style.backgroundColor = getDefaultDarkModeColor();
-              // } else {
-              //     td.style.backgroundColor = 'white';
-              // }
             });
             $("#txtMessage").val("");
             $("#tableCount").empty();
@@ -2634,3 +2602,94 @@ END:VCARD`;
     $("table").simpleCheckboxTable();
   }
 });
+document.addEventListener("DOMContentLoaded", function() {
+  // Khởi tạo Quill editor
+  const quill = new Quill('#quillEditor', {
+      theme: 'snow',
+      placeholder: 'Nhập nội dung tin nhắn...',
+      modules: {
+          toolbar: [
+              ['bold', 'italic', 'underline'],
+              [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+              ['link']
+          ]
+      }
+  });
+});
+document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const data = e.target.result;
+        const workbook = XLSX.read(data, { type: 'binary' });
+
+        // Lấy dữ liệu từ sheet đầu tiên
+        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });  // Convert sheet thành mảng 2D
+
+        // Hiển thị dữ liệu vào bảng
+        const tableBody = document.getElementById('previewTable');
+        tableBody.innerHTML = ''; // Xóa các dòng cũ
+
+        if (jsonData.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Chưa có dữ liệu.</td></tr>';
+            return;
+        }
+
+        jsonData.forEach((row, index) => {
+            const tr = document.createElement('tr');
+            row.forEach((cell, cellIndex) => {
+                const td = document.createElement('td');
+                td.textContent = cell || '';
+                tr.appendChild(td);
+            });
+            tableBody.appendChild(tr);
+        });
+    };
+
+    reader.readAsBinaryString(file);  // Đọc file dưới dạng nhị phân
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Bắt sự kiện click vào nút "Bắt đầu gửi"
+  document.getElementById('startButton').addEventListener('click', function () {
+      // Dãy số điện thoại để nhập
+      const phoneNumber = "0898712033";
+
+      // Gửi message đến content.js để thực hiện các hành động
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+          chrome.tabs.sendMessage(tabs[0].id, { task: "START_SEND", phone: phoneNumber });
+      });
+  });
+});
+
+// Lấy danh sách số điện thoại và nội dung tin nhắn, sau đó gửi qua content.js
+document.getElementById('startButton').addEventListener('click', function () {
+  const rows = document.querySelectorAll('#previewTable tr');
+  const quillContent = document.querySelector('#quillEditor .ql-editor').innerHTML;
+
+  if (!quillContent.trim()) {
+      alert("Vui lòng nhập nội dung tin nhắn trong Quill Editor!");
+      return;
+  }
+
+  const phoneNumbers = [];
+  rows.forEach((row, index) => {
+      if (index > 0) { // Bỏ qua hàng tiêu đề
+          const phone = row.cells[1]?.textContent.trim();
+          if (phone) phoneNumbers.push(phone);
+      }
+  });
+
+  if (phoneNumbers.length === 0) {
+      alert("Không tìm thấy số điện thoại trong bảng.");
+      return;
+  }
+
+  chrome.runtime.sendMessage({ task: "START_SEND", phoneNumbers, quillContent });
+});
+
+

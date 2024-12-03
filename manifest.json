@@ -58,7 +58,7 @@
     ],   
     "web_accessible_resources": [
         {
-          "resources": ["page/login.html", "page/popup.html"],
+          "resources": ["page/login.html", "page/popup.html", "js/quill.min.js", "css/quill.snow.css"],
           "matches": ["*://chat.zalo.me/*", "*://id.zalo.me/*"]
         }
       ],
