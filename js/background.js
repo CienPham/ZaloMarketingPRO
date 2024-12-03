@@ -186,6 +186,7 @@ function clearCookies(url) {
     
             if (isBanBe === "KHACH_HANG") {
                 await new Promise((resolve, reject) => {
+                  // kiểm tra số điện thoại hợp lệ
                     if (isValidVietnamesePhoneNumber(phone) === false) {
                         var data = {
                             status: "error",
@@ -409,8 +410,6 @@ function yourFunction() {
     console.log('This script is running on id.zalo.me');
     window.location.href = 'https://id.zalo.me';
 }
-
-
   function sendMedia(activeTab, files) {
     console.log("file in send media", activeTab, files);
     chrome.scripting.executeScript(
